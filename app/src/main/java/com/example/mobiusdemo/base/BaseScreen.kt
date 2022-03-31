@@ -16,10 +16,10 @@ import com.spotify.mobius.Next.noChange
 import com.spotify.mobius.Update
 import com.spotify.mobius.android.MobiusLoopViewModel
 import com.spotify.mobius.functions.Consumer
-import com.spotify.mobius.rx2.RxMobius
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.Disposable
+import com.spotify.mobius.rx3.RxMobius
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.disposables.Disposable
 
 abstract class BaseScreen<K : ScreenKey, B : ViewBinding, M : Parcelable, E, F, V> : Fragment() {
 
