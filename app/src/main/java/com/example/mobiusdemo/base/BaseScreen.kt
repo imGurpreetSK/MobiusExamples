@@ -2,6 +2,7 @@ package com.example.mobiusdemo.base
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +11,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.viewbinding.ViewBinding
-import com.spotify.mobius.EventSource
-import com.spotify.mobius.Init
+import com.spotify.mobius.*
 import com.spotify.mobius.Next.noChange
-import com.spotify.mobius.Update
 import com.spotify.mobius.android.MobiusLoopViewModel
 import com.spotify.mobius.functions.Consumer
 import com.spotify.mobius.rx3.RxMobius
@@ -55,7 +54,8 @@ abstract class BaseScreen<K : ScreenKey, B : ViewBinding, M : Parcelable, E, F, 
 
     open fun createInit(): Init<M, F> = Init { model -> first(model) }
 
-    open fun createEffectHandler(viewEffectsConsumer: Consumer<V>): ObservableTransformer<F, E> = ObservableTransformer { Observable.never() }
+    open fun createEffectHandler(viewEffectsConsumer: Consumer<V>): ObservableTransformer<F, E> =
+        ObservableTransformer { Observable.never() }
 
     open fun additionalEventSources(): List<EventSource<E>> = emptyList()
 
@@ -78,6 +78,7 @@ abstract class BaseScreen<K : ScreenKey, B : ViewBinding, M : Parcelable, E, F, 
             private fun loop(viewEffectsConsumer: Consumer<V>) = RxMobius
                 .loop(createUpdate(), createEffectHandler(viewEffectsConsumer))
                 .eventSources(additionalEventSources())
+                .logger(logger())
 
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -114,6 +115,32 @@ abstract class BaseScreen<K : ScreenKey, B : ViewBinding, M : Parcelable, E, F, 
         super.onSaveInstanceState(outState)
         if (::viewModel.isInitialized) {
             outState.putParcelable(KEY_MODEL, viewModel.model)
+        }
+    }
+
+    private fun logger() = object : MobiusLoop.Logger<M, E, F> {
+        override fun beforeInit(model: M) {
+            // No-Op
+        }
+
+        override fun afterInit(model: M, result: First<M, F>) {
+            // No-Op
+        }
+
+        override fun exceptionDuringInit(model: M, exception: Throwable) {
+            // No-Op
+        }
+
+        override fun beforeUpdate(model: M, event: E) {
+            // No-Op
+        }
+
+        override fun afterUpdate(model: M, event: E, result: Next<M, F>) {
+            Log.i("AfterUpdate", "$model, $event, $result")
+        }
+
+        override fun exceptionDuringUpdate(model: M, event: E, exception: Throwable) {
+            // No-Op
         }
     }
 }

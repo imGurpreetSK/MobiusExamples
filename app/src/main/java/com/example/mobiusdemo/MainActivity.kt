@@ -3,6 +3,7 @@ package com.example.mobiusdemo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.mobiusdemo.counter.CounterFragment
+import com.example.mobiusdemo.memes.MemesFragment
 import com.example.mobiusdemo.stranger.StrangerFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, CounterFragment(), "fragment")
+            .add(R.id.fragment_container, MemesFragment(), "fragment")
             .commit()
     }
 }
