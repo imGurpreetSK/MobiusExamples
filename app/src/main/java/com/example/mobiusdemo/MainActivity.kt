@@ -2,6 +2,7 @@ package com.example.mobiusdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.mobiusdemo.akashcounter.AkashCounterFragment
 import com.example.mobiusdemo.counter.CounterFragment
 import com.example.mobiusdemo.memes.MemesFragment
 import com.example.mobiusdemo.stranger.StrangerFragment
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, MemesFragment(), "fragment")
+            .add(R.id.fragment_container, AkashCounterFragment(), "fragment")
             .commit()
     }
 }
