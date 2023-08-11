@@ -1,5 +1,6 @@
 package com.example.mobiusdemo.akashcounter
 
+import com.google.common.truth.Truth.assertThat
 import com.spotify.mobius.Next
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -60,5 +61,21 @@ class CounterUpdateTest {
         // Assert
         val expected = Next.next<CounterModel, Unit>(CounterModel(49))
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `do not allow negative count - base count 0`() {
+        // Setup
+        val model = CounterModel(0)
+        val event = CounterEvent.Decrement
+
+        // Act
+        val result = CounterUpdate.update(model, event)
+
+        // Assert
+        assertThat(result.hasModel())
+            .isFalse()
+        assertThat(result.effects())
+            .containsExactly(CounterEffect.ViewEffect.NegativeCountNotAllowed)
     }
 }
